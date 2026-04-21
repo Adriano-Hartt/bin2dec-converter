@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin2Dec - Binary to Decimal Converter</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+            text-align: center;
+        }
+        .container {
+            background: #000;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+        }
+        input {
+            width: 200px;
+            padding: 12px;
+            font-size: 18px;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .result {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            min-height: 30px;
+        }
+        .error {
+            color: #ff4444;
+            background: #220000;
+        }
+        .info {
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 Bin2Dec Converter</h1>
+        <p>Enter up to 8 binary digits (0s and 1s):</p>
+        
+        <input type="text" id="binaryInput" maxlength="8" placeholder="00000000">
+        <br>
+        <button onclick="convertBinary()">Convert to Decimal</button>
+        <button onclick="clearAll()">Clear</button>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="info">
+            <strong>Rules:</strong> Max 8 digits • Only 0s and 1s • No arrays used • Math.pow() for position calculation
+        </div>
+    </div>
+
+    <script>
+        function convertBinary() {
+            const input = document.getElementById('binaryInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            // Validate input
+            if (input === '') {
+                showResult('Please enter binary digits', true);
+                return;
+            }
+            
+            if (!/^[01]{1,8}$/.test(input)) {
+                showResult('Invalid input! Use only 0s and 1s (max 8 digits)', true);
+                return;
+            }
+            
+            // Convert binary to decimal WITHOUT arrays
+            let decimal = 0;
+            let power = input.length - 1; // Start from highest power
+            
+            for (let i = 0; i < input.length; i++) {
+                const digit = parseInt(input[i]);
+                // Use Math.pow() as required mathematical function for position weight
+                decimal += digit * Math.pow(2, power);
+                power--;
+            }
+            
+            showResult(`Binary: ${input} = Decimal: ${decimal}`);
+        }
+        
+        function showResult(message, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${isError ? 'error' : ''}`;
+        }
+        
+        function clearAll() {
+            document.getElementById('binaryInput').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('result').className = 'result';
+            document.getElementById('binaryInput').focus();
+        }
+        
+        // Allow Enter key to convert
+        document.getElementById('binaryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                convertBinary();
+            }
+        });
+        
+        // Auto-focus on input
+        window.onload = function() {
+            document.getElementById('binaryInput').focus();
+        };
+    </script>
+</body>
+html>
